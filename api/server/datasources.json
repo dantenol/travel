@@ -1,0 +1,14 @@
+{
+  "mongodb": {
+    "host": "localhost",
+    "port": 27017,
+    "url": "",
+    "database": "travel",
+    "password": "",
+    "name": "mongodb",
+    "user": "",
+    "connector": "mongodb",
+    "useNewUrlParser": true,
+    "useUnifiedTopology": true
+  }
+}

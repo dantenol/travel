@@ -1,0 +1,71 @@
+{
+  "name": "destination",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "place": {
+      "type": "string",
+      "required": true
+    },
+    "country": {
+      "type": "string",
+      "required": true
+    },
+    "coords": {
+      "type": "object",
+      "required": true
+    },
+    "createdAt": {
+      "type": "date"
+    },
+    "modifiedAt": {
+      "type": "date"
+    },
+    "lastModifiedBy": {
+      "type": "any"
+    },
+    "createdBy": {
+      "type": "any"
+    },
+    "hotels": {
+      "type": [
+        "string"
+      ],
+      "default": []
+    },
+    "places": {
+      "type": [
+        "string"
+      ],
+      "default": []
+    },
+    "photoURLs": {
+      "type": [
+        "string"
+      ]
+    },
+    "others": {
+      "type": [
+        "string"
+      ],
+      "default": []
+    },
+    "visited": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "validations": [],
+  "relations": {
+    "list": {
+      "type": "belongsTo",
+      "model": "list",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

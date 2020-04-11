@@ -1,0 +1,52 @@
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #aadaff;
+  height: 100vh;
+}
+
+#container {
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 8px;
+  text-align: center;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+}
+
+#container input {
+  width: 320px;
+  border-radius: 8px;
+  padding: 8px;
+  border: 2px solid #6E2BC4;
+  margin: 8px;
+  font-size: 20px;
+}
+
+#container input[type=submit] {
+  background-color: #6E2BC4;
+  text-transform: uppercase;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#container input[type=submit]:hover {
+  background-color: #2b0f4e;
+}
+
+#pwdReset, #signup {
+  text-decoration: underline;
+  cursor: pointer;
+  margin-bottom: 24px;
+}
+
+#signup {
+  text-transform: uppercase;
+  color: #009c06;
+  font-size: 20px;
+  font-weight: bold;
+}

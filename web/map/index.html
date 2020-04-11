@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nossas Viagens | Mapa</title>
+    <link rel="stylesheet" href="../index.css" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="../scripts/fetch.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <aside>
+        <div id="loading">
+          Carregando...
+        </div>
+        <div id="noList">
+          <p>Você não tem nenhuma lista</p>
+          <br />
+          <a onclick="newList()">Começar</a>
+        </div>
+        <div id="createList">
+          <span>Nome da lista</span>
+          <form onsubmit="createList()" action="javascript:void(0);">
+            <input type="text" name="listName" maxlength="20" />
+            <input type="submit" value="continuar" />
+          </form>
+        </div>
+        <div id="emptyList">
+          <div class="listInfo">
+            <p class="listName"></p>
+            <p class="listOwner"></p>
+          </div>
+          Sua lista está vazia. Pesquise por destinos para começar!
+          <div class="bottomOptions">
+            <a onclick="unlinkList()" class="deleteList">Excluir lista</a>
+            <a onClick="viewLists()">Trocar lista</a>
+          </div>
+        </div>
+        <div id="selectList">
+          Selecione uma lista para visualizar:
+        </div>
+        <div id="noClick">
+          <div class="listInfo">
+            <p class="listName"></p>
+            <p class="listOwner"></p>
+          </div>
+          <span>
+            Clique em algum marcador ou selecione abaixo:
+          </span>
+          <ul id="placesList"></ul>
+          <div id="adminOptions">
+            <span>
+              Marcador
+            </span>
+            <div id="icons">
+              <a onclick="changeIcon('heart')">
+                <img src="../assets/markers/heart.png" alt="heart" />
+              </a>
+              <a onclick="changeIcon('plane')">
+                <img src="../assets/markers/plane.png" alt="plane" />
+              </a>
+              <a onclick="changeIcon('star')">
+                <img src="../assets/markers/star.png" alt="star" />
+              </a>
+            </div>
+            <div id="share">
+              <span>
+                Compartilhar com
+              </span>
+              <div id="sharedWith"></div>
+              <form
+                action="javascript:void(0)"
+                id="newInvite"
+                onsubmit="share()"
+              >
+                <input type="email" placeholder="convidar" name="inviteEmail" />
+                <input type="submit" value="+" />
+              </form>
+              <span>ou</span>
+              <br />
+              <a onclick="shareUrl()">enviar por link</a>
+            </div>
+            <a onclick="deleteList()" class="deleteList">Excluir lista</a>
+          </div>
+          <div id="guestOptions">
+            <a onclick="unlinkList()" class="deleteList">Sair da lista</a>
+          </div>
+          <div class="bottomOptions">
+            <a id="viewLists" onClick="viewLists()">Trocar lista</a>
+            <a id="createAccount" href="/signup">Criar uma conta</a>
+          </div>
+        </div>
+        <div id="selected">
+          <div>
+            <a onclick="closeDestination()">
+              <span class="text_icon" id="close">
+                &times; Fechar
+              </span>
+            </a>
+          </div>
+          <p id="name"></p>
+          <p id="country"></p>
+          <div class="links hotels">
+            <div class="text_icon">
+              <img src="../assets/icons/bell.svg" alt="hotel" />
+              Hotéis
+            </div>
+            <div class="linksContainer"></div>
+            <button class="addLinks" onclick="showLinksDialog('hotels')">
+              Adicionar
+            </button>
+          </div>
+          <div class="links places">
+            <div class="text_icon">
+              <img src="../assets/icons/cinema.svg" alt="places" />
+              Passeios
+            </div>
+            <div class="linksContainer"></div>
+            <button class="addLinks" onclick="showLinksDialog('places')">
+              Adicionar
+            </button>
+          </div>
+          <div class="text_icon photos">
+            <img src="../assets/icons/camera.svg" alt="photos" />
+            Fotos
+          </div>
+          <div id="pictures"></div>
+          <p id="credits"></p>
+          <div class="links others">
+            <div class="text_icon">
+              <img src="../assets/icons/chain.svg" alt="others" />
+              Outros
+            </div>
+            <div class="linksContainer"></div>
+            <button class="addLinks" onclick="showLinksDialog('others')">
+              Adicionar
+            </button>
+          </div>
+          <button id="removePlace">
+            <img src="../assets/icons/bin.svg" alt="remove" />
+            REMOVER DA LISTA
+          </button>
+        </div>
+      </aside>
+      <main>
+        <div id="search">
+          <input type="text" id="autocomplete" />
+          <button id="addPlace" onclick="addPlace()">
+            Adicionar
+            <img src="../assets/icons/plane.svg" alt="plane" />
+          </button>
+        </div>
+        <div id="map"></div>
+      </main>
+      <div class="dialog" id="modal">
+        <div id="closeModal" onclick="closeModal()"></div>
+        <div id="modalContainer">
+          <h1>Insira os links ou nomes, um por linha</h1>
+          <div id="links">
+            <div id="linkList"></div>
+            <textarea rows="1" placeholder="adicionar"></textarea>
+          </div>
+          <button class="save" onclick="updateLinks()">salvar</button>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="map.js"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2nwExUanh5YahWAllC65tmfDpU0jrtwk&callback=initMap&libraries=places"
+      async
+      defer
+    ></script>
+  </body>
+</html>
