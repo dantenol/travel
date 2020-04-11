@@ -227,11 +227,12 @@ function selectList(data) {
         div.appendChild(email);
       }
     });
-  } else if (!isSharing) {
-    changeDisplay('guestOptions', 'initial');
-  } else if (isSharing) {
-    changeDisplay('createAccount', 'initial');
+  }
+  if (isSharing) {
+    changeDisplay('createAccount', 'block');
     changeDisplay('viewLists', 'none');
+  } else if (!isSharing && data.createdBy !== localStorage.userId) {
+    changeDisplay('guestOptions', 'initial');
   }
 }
 
