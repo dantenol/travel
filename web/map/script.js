@@ -120,6 +120,7 @@ async function loadLists() {
 
   changeDisplay("loading", "none");
   changeDisplay("noClick", "none");
+  changeDisplay("emptyList", "none");
   const emptyListText = (document.querySelector("#noList p").innerHTML =
     data.fullName + ", você ainda não tem nenhuma lista.");
   if (!data.lists.length) {
@@ -153,7 +154,7 @@ async function createList() {
 }
 
 function displayLists(data) {
-  const div = document.getElementById("selectList");
+  const div = document.getElementById("lists");
   div.innerHTML = "";
   let i = 0;
   while (i < data.length) {
@@ -583,10 +584,26 @@ async function shareUrl() {
         isPublic: true,
       }
     );
-
   }
   const newUrl = window.location.origin + "/map?list=" + list.id;
   console.log(newUrl);
+
+  if (navigator.share) {
+    await navigator
+      .share({
+        title: list.name,
+        text: "Acompanhe minha lista de destinos no Vamos Fugir",
+        url: newUrl,
+      })
+      .then(() => console.log("Successful share"))
+      .catch((error) => console.log("Error sharing", error));
+  } else {
+    var copyText = document.getElementsByName("hiddenUrl")[0];
+    copyText.value = newUrl;
+    copyText.select();
+    document.execCommand("copy");
+    alert("Copiado para área de transferência.");
+  }
 }
 
 async function loadSharedList(id) {
@@ -595,4 +612,17 @@ async function loadSharedList(id) {
 
   selectList(data);
   console.log(data);
+}
+
+function logout() {
+  create(
+    "users/logout",
+    {
+      access_token: localStorage.access_token,
+    },
+    {}
+  );
+
+  localStorage.clear();
+  window.location.href = "/web";
 }
