@@ -1,5 +1,7 @@
 let infos = {};
-let list, editing, currentDestination, isSharing;
+let list, editing, currentDestination, isSharing, isMobile, swipeStart;
+
+let drawerVisible = true;
 
 function changeText(id, text) {
   document.getElementById(id).innerHTML = text;
@@ -98,6 +100,7 @@ async function addPlace() {
 document.addEventListener('DOMContentLoaded', onLoad);
 
 function onLoad() {
+  isMobile = window.screen.width < 600;
   const query = getUrlParams();
   if (query.invite || localStorage.inviteId) {
     answerInvite(query.invite);
@@ -173,6 +176,9 @@ function displayLists(data) {
 
 function selectList(data) {
   list = data;
+  if (isMobile) {
+    hideDrawer();
+  }
   changeDisplay('selectList', 'none');
   changeDisplay('selected', 'none');
   changeDisplay('noClick', 'none');
@@ -263,6 +269,9 @@ function selectPlace(data) {
 
   removeButton.onclick = () => removePlace(data.id);
   buildMarkers(list);
+  if (isMobile) {
+    toggleDrawer();
+  }
 }
 
 function showLinksDialog(type) {
@@ -586,6 +595,21 @@ async function shareUrl() {
   }
   const newUrl = window.location.origin + '/map?list=' + list.id;
   console.log(newUrl);
+  if (navigator.share) {
+    navigator
+      .share({
+        title: list.name,
+        text: 'Confira minha lista de destinos no Vamos Fugir!',
+        url: newUrl,
+      })
+      .then(() => console.log('Successful share'))
+      .catch(error => console.log('Error sharing', error));
+  } else {
+    const el = (document.getElementsByName('shareUrl')[0].value = newUrl);
+    el.select();
+    document.execCommand('copy');
+    alert('Link copiado!');
+  }
 }
 
 async function loadSharedList(id) {
@@ -608,3 +632,48 @@ async function logout() {
   localStorage.clear();
   window.location.href = '/';
 }
+
+function hideDrawer() {
+  drawerVisible = false;
+  document.getElementsByTagName('aside')[0].classList.add('down');
+  document.querySelector('#toggleDrawer img').style.transform = 'rotate(0deg)';
+  changeDisplay('search', 'flex');
+}
+
+function showDrawer() {
+  drawerVisible = true;
+  document.getElementsByTagName('aside')[0].classList.remove('down');
+  document.querySelector('#toggleDrawer img').style.transform =
+    'rotate(180deg)';
+  changeDisplay('search', 'none');
+}
+
+function toggleDrawer() {
+  if (drawerVisible) {
+    hideDrawer();
+  } else {
+    showDrawer();
+  }
+}
+
+document.getElementById('swiper').ontouchstart = e => {
+  swipeStart = e.touches[0].pageY;
+  document.getElementById('swiper').classList.add('focus');
+  e.preventDefault();
+};
+
+document.getElementById('swiper').ontouchend = e => {
+  const end = e.changedTouches[0].pageY;
+  document.getElementById('swiper').classList.remove('focus');
+  document.getElementsByTagName('aside')[0].style.top = '';
+  if (end > swipeStart && drawerVisible) {
+    hideDrawer();
+  } else if (end < swipeStart && !drawerVisible) {
+    showDrawer();
+  }
+};
+
+document.getElementById('swiper').ontouchmove = e => {
+  const pos = e.touches[0].pageY;
+  document.getElementsByTagName('aside')[0].style.top = pos + 'px';
+};

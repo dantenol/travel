@@ -11,16 +11,28 @@ aside {
   background-color: white;
   padding: 16px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  z-index: 2;
+  z-index: 3;
 }
 
 main {
   width: 100%;
 }
 
+#swiper {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 32px;
+  width: 100%;
+}
+
 #map {
   width: 100%;
   height: 100%;
+}
+
+#toggleDrawer {
+  display: none;
 }
 
 #search {
@@ -52,6 +64,10 @@ main {
   font-size: 16px;
   cursor: pointer;
   font-weight: bold;
+}
+
+.mobile {
+  display: none;
 }
 
 #addPlace img {
@@ -164,7 +180,7 @@ main {
 .addLinks:after,
 #removePlace:after {
   display: block;
-  content: " ";
+  content: ' ';
   position: absolute;
   z-index: 1;
   background: rgba(0, 0, 0);
@@ -257,7 +273,7 @@ main {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-#createList input[type="submit"],
+#createList input[type='submit'],
 #selectList button {
   padding: 8px;
   background-color: #00c1c1;
@@ -278,6 +294,7 @@ main {
 ul#placesList {
   max-height: 700px;
   overflow: auto;
+  padding-left: 0;
 }
 
 #placesList a {
@@ -324,7 +341,6 @@ a.deleteList {
   text-decoration: underline;
   font-size: 12px;
   cursor: pointer;
-  margin-bottom: 24px;
 }
 
 .links .addLinks,
@@ -387,7 +403,7 @@ a.deleteList {
 
 #linkList p::before,
 .linksContainer p::before {
-  content: "- ";
+  content: '- ';
 }
 
 #linkList p,
@@ -450,7 +466,7 @@ a.deleteList {
   font-size: 20px;
 }
 
-#share input[type="submit"] {
+#share input[type='submit'] {
   border-radius: 50%;
   width: 32px;
   height: 32px;
@@ -496,11 +512,119 @@ a.deleteList {
 }
 
 .listOwner::before {
-  content: "por ";
+  content: 'por ';
 }
 
 .listOwner {
   font-size: 16px;
   color: gray;
   text-transform: uppercase;
+}
+
+@media only screen and (max-width: 600px) {
+  #container {
+    flex-direction: column-reverse;
+    overflow: hidden;
+  }
+
+  main {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  aside {
+    position: absolute;
+    width: 100vw;
+    min-width: 0;
+    height: 90vh;
+    top: 10vh;
+    transition: top 0.2s ease-in;
+    padding-top: 0;
+    overflow: auto;
+  }
+
+  aside > div > p,
+  aside > div span {
+    font-size: 24px;
+  }
+
+  aside.down {
+    top: 90vh;
+  }
+
+  aside.down #toggleDrawer img {
+    transform: rotate(0deg);
+  }
+
+  aside.down .bottomOptions {
+    display: none;
+  }
+
+  .bottomOptions a {
+    font-size: 16px;
+  }
+
+  .deleteList p {
+    margin-bottom: 48px;
+  }
+
+  #toggleDrawer {
+    display: flex;
+    position: absolute;
+    right: 8px;
+    bottom: 90vh;
+  }
+
+  #toggleDrawer {
+    background-color: white;
+    border-radius: 8px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    box-shadow: 0 -4px 4px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  #toggleDrawer img {
+    transition: transform 0.2s ease-in;
+    transform: rotate(180deg);
+    width: 24px;
+    height: 24px;
+  }
+
+  #swiper {
+    display: flex;
+  }
+
+  #swiper.focus {
+    background-color: #efefef;
+  }
+
+  #search input {
+    font-size: 16px;
+  }
+
+  .mobile {
+    display: block;
+  }
+
+  .web {
+    display: none;
+  }
+
+  #placesList li {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  ul#placesList {
+    overflow: initial;
+  }
+
+  #modalContainer h1 {
+    font-size: 16px;
+  }
+
+  #modal #modalContainer {
+    max-width: 95vw;
+  }
 }

@@ -11,8 +11,18 @@
   <body>
     <div id="container">
       <aside>
+        <div id="swiper">&middot;&middot;&middot;</div>
+        <button id="toggleDrawer" onclick="toggleDrawer()">
+          <img
+            src="../assets/icons/chevron.svg"
+            alt="chevron"
+            id="toggleChevron"
+          />
+        </button>
         <div id="loading">
-          Carregando...
+          <p>
+            Carregando...
+          </p>
         </div>
         <div id="noList">
           <p>Você não tem nenhuma lista</p>
@@ -31,14 +41,18 @@
             <p class="listName"></p>
             <p class="listOwner"></p>
           </div>
-          Sua lista está vazia. Pesquise por destinos para começar!
+          <p>
+            Sua lista está vazia. Pesquise por destinos para começar!
+          </p>
           <div class="bottomOptions">
             <a onclick="unlinkList()" class="deleteList">Excluir lista</a>
             <a onClick="viewLists()">Trocar lista</a>
           </div>
         </div>
         <div id="selectList">
-          Selecione uma lista para visualizar:
+          <p>
+            Selecione uma lista para visualizar:
+          </p>
           <div id="listsContainer"></div>
           <div class="bottomOptions">
             <a onclick="logout()">Fazer logoff</a>
@@ -49,9 +63,9 @@
             <p class="listName"></p>
             <p class="listOwner"></p>
           </div>
-          <span>
+          <p>
             Clique em algum marcador ou selecione abaixo:
-          </span>
+          </p>
           <ul id="placesList"></ul>
           <div id="adminOptions">
             <span>
@@ -83,9 +97,14 @@
               </form>
               <span>ou</span>
               <br />
+              <input type="text" name="shareUrl" hidden>
               <a onclick="shareUrl()">enviar por link</a>
             </div>
-            <a onclick="deleteList()" class="deleteList">Excluir lista</a>
+            <a onclick="deleteList()" class="deleteList">
+              <p>
+                Excluir lista
+              </p>
+            </a>
           </div>
           <div id="guestOptions">
             <a onclick="unlinkList()" class="deleteList">Sair da lista</a>
@@ -99,7 +118,7 @@
           <div>
             <a onclick="closeDestination()">
               <span class="text_icon" id="close">
-                &times; Fechar
+                &lt; Voltar
               </span>
             </a>
           </div>
@@ -151,7 +170,12 @@
         <div id="search">
           <input type="text" id="autocomplete" />
           <button id="addPlace" onclick="addPlace()">
-            Adicionar
+            <span class="web">
+              Adicionar
+            </span>
+            <span class="mobile">
+              +
+            </span>
             <img src="../assets/icons/plane.svg" alt="plane" />
           </button>
         </div>
