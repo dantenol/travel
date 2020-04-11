@@ -551,7 +551,11 @@ a.deleteList {
   }
 
   aside.down {
-    top: 90vh;
+    top: 85vh;
+  }
+
+  aside.down > div {
+    height: calc(15vh - 48px);
   }
 
   aside.down #toggleDrawer img {

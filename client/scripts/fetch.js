@@ -1,4 +1,4 @@
-const _apiHost = window.location.origin + "/api/";
+const _apiHost = "https://192.168.0.3/api/";
 
 async function request(url, params, data, method = "GET") {
   const options = {

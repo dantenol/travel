@@ -636,15 +636,12 @@ async function logout() {
 function hideDrawer() {
   drawerVisible = false;
   document.getElementsByTagName('aside')[0].classList.add('down');
-  document.querySelector('#toggleDrawer img').style.transform = 'rotate(0deg)';
   changeDisplay('search', 'flex');
 }
 
 function showDrawer() {
   drawerVisible = true;
   document.getElementsByTagName('aside')[0].classList.remove('down');
-  document.querySelector('#toggleDrawer img').style.transform =
-    'rotate(180deg)';
   changeDisplay('search', 'none');
 }
 
@@ -666,6 +663,7 @@ document.getElementById('swiper').ontouchend = e => {
   const end = e.changedTouches[0].pageY;
   document.getElementById('swiper').classList.remove('focus');
   document.getElementsByTagName('aside')[0].style.top = '';
+  console.log(swipeStart, end);
   if (end > swipeStart && drawerVisible) {
     hideDrawer();
   } else if (end < swipeStart && !drawerVisible) {
@@ -675,5 +673,6 @@ document.getElementById('swiper').ontouchend = e => {
 
 document.getElementById('swiper').ontouchmove = e => {
   const pos = e.touches[0].pageY;
+  console.log(pos);
   document.getElementsByTagName('aside')[0].style.top = pos + 'px';
 };
