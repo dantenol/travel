@@ -9,6 +9,8 @@ module.exports = function(Invite) {
     next();
   });
 
+  Invite.afterRemote('create', async function(ctx, data) {});
+
   Invite.answer = async function(req, id, answer) {
     const User = Invite.app.models.User;
     const inv = await Invite.findById(id);
@@ -31,7 +33,7 @@ module.exports = function(Invite) {
 
   Invite.remoteMethod('answer', {
     accepts: [
-      {arg: 'req', type: 'object', 'http': {source: 'req'}},
+      {arg: 'req', type: 'object', http: {source: 'req'}},
       {arg: 'id', type: 'string', required: true},
       {arg: 'answer', type: 'boolean', required: true},
     ],
