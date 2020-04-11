@@ -39,7 +39,7 @@ async function createAccount() {
     );
     localStorage.setItem("access_token", login.id);
     localStorage.setItem("userId", login.userId);
-    window.location.href = "/web/map";
+    window.location.href = "/map";
   } else {
     console.log(data);
   }

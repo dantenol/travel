@@ -1,4 +1,4 @@
-const _apiHost = "http://localhost:3000/api/";
+const _apiHost = window.location.origin + "/api/";
 
 async function request(url, params, data, method = "GET") {
   const options = {

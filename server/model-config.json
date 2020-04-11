@@ -67,6 +67,7 @@
           "prototype.patchAttributes": true,
           "prototype.__get__destinations": true,
           "prototype.__create__destinations": true,
+          "prototype.__updateById__destinations": true,
           "prototype.__destroyById__destinations": true
         }
       }

@@ -5,7 +5,7 @@ const boot = require('loopback-boot');
 const https = require('https');
 const sslConfig = require('./ssl/ssl-config');
 
-const app = module.exports = loopback();
+const app = (module.exports = loopback());
 
 const options = {
   key: sslConfig.privateKey,
@@ -33,6 +33,5 @@ boot(app, __dirname, function(err) {
   if (err) throw err;
 
   // start the server if `$ node server.js`
-  if (require.main === module)
-    app.start();
+  if (require.main === module) app.start();
 });

@@ -19,25 +19,25 @@ function changeDisplay(id, display) {
 }
 
 function loadGooglePics(urls) {
-  const container = document.getElementById("pictures");
-  const credits = document.getElementById("credits");
-  container.innerHTML = "";
-  credits.innerHTML = "";
+  const container = document.getElementById('pictures');
+  const credits = document.getElementById('credits');
+  container.innerHTML = '';
+  credits.innerHTML = '';
   let i = 0;
   while (i < urls.length) {
-    const img = document.createElement("img");
+    const img = document.createElement('img');
     img.src = urls[i];
     container.appendChild(img);
     i += 1;
   }
-  const credit = document.createTextNode("do Google");
+  const credit = document.createTextNode('do Google');
   credits.appendChild(credit);
 }
 
 function findCountry(array) {
   let i = 0;
   while (i < array.length) {
-    if (array[i].types.includes("country")) {
+    if (array[i].types.includes('country')) {
       return array[i].long_name;
     }
     i++;
@@ -47,7 +47,7 @@ function findCountry(array) {
 function findCity(code, data) {
   const addresses = code.match(/(<span.+?\/span>)/gi);
   const idx = addresses.findIndex(
-    (e) => e.includes("locality") || e.includes("region")
+    e => e.includes('locality') || e.includes('region'),
   );
   if (idx >= 0) {
     const local = />(.+?)</g.exec(addresses[idx]);
@@ -56,8 +56,8 @@ function findCity(code, data) {
     let i = 0;
     while (i < data.length) {
       if (
-        data[i].types.includes("locality") ||
-        data[i].types.includes("administrative_area_level_2")
+        data[i].types.includes('locality') ||
+        data[i].types.includes('administrative_area_level_2')
       ) {
         return data[i].long_name;
       }
@@ -73,29 +73,29 @@ async function addPlace() {
   };
   infos.photoURLs = [...place.photoURLs];
   if (address.length < 2) {
-    return alert("Local inválido. Especifique mais.");
+    return alert('Local inválido. Especifique mais.');
   }
   infos.country = findCountry(address);
   infos.place = findCity(place.adr_address, address);
   if (!infos.place) {
-    return alert("Local inválido. Especifique mais.");
+    return alert('Local inválido. Especifique mais.');
   }
-  changeDisplay("addPlace", "none");
-  document.getElementById("autocomplete").value = "";
+  changeDisplay('addPlace', 'none');
+  document.getElementById('autocomplete').value = '';
   const placeData = await create(
-    "lists/" + list.id + "/destinations",
+    'lists/' + list.id + '/destinations',
     {
       access_token: localStorage.access_token,
     },
     {
       ...infos,
-    }
+    },
   );
   selectPlace(placeData);
   reloadList();
 }
 
-document.addEventListener("DOMContentLoaded", onLoad);
+document.addEventListener('DOMContentLoaded', onLoad);
 
 function onLoad() {
   const query = getUrlParams();
@@ -109,112 +109,111 @@ function onLoad() {
 }
 
 async function loadLists() {
-  const data = await get("users/" + localStorage.userId, {
+  const data = await get('users/' + localStorage.userId, {
     access_token: localStorage.access_token,
     filter: '{"include": {"lists": ["destinations", "users"]}}',
   });
 
   if (!data.id) {
-    return alert("Erro ao acessar a lista!");
+    return alert('Erro ao acessar a lista!');
   }
 
-  changeDisplay("loading", "none");
-  changeDisplay("noClick", "none");
-  changeDisplay("emptyList", "none");
-  const emptyListText = (document.querySelector("#noList p").innerHTML =
-    data.fullName + ", você ainda não tem nenhuma lista.");
+  changeDisplay('loading', 'none');
+  changeDisplay('noClick', 'none');
+  const emptyListText = (document.querySelector('#noList p').innerHTML =
+    data.fullName + ', você ainda não tem nenhuma lista.');
   if (!data.lists.length) {
-    changeDisplay("noList", "flex");
+    changeDisplay('noList', 'flex');
   } else {
-    changeDisplay("selectList", "flex");
+    changeDisplay('selectList', 'flex');
     displayLists(data.lists);
   }
 }
 
 function newList() {
-  changeDisplay("noList", "none");
-  changeDisplay("selectList", "none");
-  changeDisplay("createList", "flex");
+  changeDisplay('noList', 'none');
+  changeDisplay('selectList', 'none');
+  changeDisplay('createList', 'flex');
 }
 
 async function createList() {
-  const listName = document.getElementsByName("listName")[0].value;
+  const listName = document.getElementsByName('listName')[0].value;
   const data = await create(
-    "users/" + localStorage.userId + "/lists",
+    'users/' + localStorage.userId + '/lists',
     {
       access_token: localStorage.access_token,
     },
     {
       name: listName,
-    }
+    },
   );
   selectList(data);
-  changeDisplay("createList", "none");
+  changeDisplay('createList', 'none');
   return false;
 }
 
 function displayLists(data) {
-  const div = document.getElementById("lists");
-  div.innerHTML = "";
+  const div = document.getElementById('listsContainer');
+  div.innerHTML = '';
   let i = 0;
   while (i < data.length) {
-    const btn = document.createElement("button");
+    const btn = document.createElement('button');
     const listData = data[i];
     btn.innerHTML = data[i].name;
     btn.onclick = () => selectList(listData);
     div.appendChild(btn);
     i++;
   }
-  const btn = document.createElement("button");
-  btn.innerHTML = "+ nova lista";
-  btn.classList.add("add");
+  const btn = document.createElement('button');
+  btn.innerHTML = '+ nova lista';
+  btn.classList.add('add');
   btn.onclick = newList;
   div.appendChild(btn);
 }
 
 function selectList(data) {
   list = data;
-  changeDisplay("selectList", "none");
-  changeDisplay("selected", "none");
-  changeDisplay("noClick", "none");
-  changeDisplay("loading", "none");
-  changeDisplay("createList", "none");
-  changeDisplay("emptyList", "none");
-  changeDisplay("search", "flex");
+  changeDisplay('selectList', 'none');
+  changeDisplay('selected', 'none');
+  changeDisplay('noClick', 'none');
+  changeDisplay('loading', 'none');
+  changeDisplay('createList', 'none');
+  changeDisplay('emptyList', 'none');
+  changeDisplay('search', 'flex');
 
-  changeTextClass("listName", data.name);
+  changeTextClass('listName', data.name);
   if (data.users) {
-    changeTextClass("listOwner", data.users[0].fullName);
+    changeTextClass('listOwner', data.users[0].fullName);
   }
   if (!data.destinations || !data.destinations.length) {
-    changeDisplay("emptyList", "flex");
+    changeDisplay('emptyList', 'flex');
   } else if (infos.country) {
-    changeDisplay("selected", "flex");
+    changeDisplay('selected', 'flex');
     buildMarkers(data.destinations);
   } else {
     const firstDestination = data.destinations[0];
     const latLng = new google.maps.LatLng(
       firstDestination.coords.lat,
-      firstDestination.coords.lng
+      firstDestination.coords.lng,
     );
     listDestinations();
-    changeDisplay("noClick", "flex");
+    changeDisplay('noClick', 'flex');
     map.panTo(latLng);
     buildMarkers(data.destinations);
   }
 
   if (data.createdBy === localStorage.userId) {
-    changeDisplay("adminOptions", "initial");
-    const div = document.getElementById("sharedWith");
-    data.users.forEach((usr) => {
+    changeDisplay('adminOptions', 'initial');
+    const div = document.getElementById('sharedWith');
+    data.users.forEach(usr => {
       if (usr.id !== localStorage.userId) {
-        const email = document.createElement("div");
-        email.classList.add("shareEmail");
-        const p = document.createElement("p");
+        const email = document.createElement('div');
+        email.classList.add('shareEmail');
+        const p = document.createElement('p');
         p.innerHTML = usr.email;
-        const deleteIcon = document.createElement("button");
-        const close = document.createElement("img");
-        close.src = "../assets/icons/close.svg";
+        const deleteIcon = document.createElement('button');
+        const close = document.createElement('img');
+        close.src = '../assets/icons/close.svg';
         deleteIcon.onclick = () => deleteUsr(usr.id);
         deleteIcon.appendChild(close);
         email.appendChild(p);
@@ -223,41 +222,41 @@ function selectList(data) {
       }
     });
   } else if (!isSharing) {
-    changeDisplay("guestOptions", "initial");
+    changeDisplay('guestOptions', 'initial');
   } else if (isSharing) {
-    changeDisplay("createAccount", "initial");
-    changeDisplay("viewLists", "none");
+    changeDisplay('createAccount', 'initial');
+    changeDisplay('viewLists', 'none');
   }
 }
 
 function selectPlace(data) {
   currentDestination = data;
   const latLng = new google.maps.LatLng(data.coords.lat, data.coords.lng);
-  const removeButton = document.getElementById("removePlace");
+  const removeButton = document.getElementById('removePlace');
   map.panTo(latLng);
   map.setZoom(15);
-  changeDisplay("noClick", "none");
-  changeDisplay("emptyList", "none");
-  changeDisplay("selected", "flex");
-  changeText("name", data.place);
-  changeText("country", data.country);
+  changeDisplay('noClick', 'none');
+  changeDisplay('emptyList', 'none');
+  changeDisplay('selected', 'flex');
+  changeText('name', data.place);
+  changeText('country', data.country);
   if (!data.customPics) {
     loadGooglePics(data.photoURLs);
   }
-  const options = ["hotels", "places", "others"];
+  const options = ['hotels', 'places', 'others'];
 
   let i = 0;
   while (i < 3) {
     const type = options[i];
     if (isSharing) {
-      document.querySelector("." + type + " .addLinks").style.display = "none";
+      document.querySelector('.' + type + ' .addLinks').style.display = 'none';
     }
     if (data[type].length > 0) {
-      data[type].forEach((link) => {
-        document.querySelector("." + type + " .linksContainer").innerHTML = "";
+      data[type].forEach(link => {
+        document.querySelector('.' + type + ' .linksContainer').innerHTML = '';
         addLink(link, type);
       });
-      document.querySelector("." + type + " .addLinks").innerHTML = "Editar";
+      document.querySelector('.' + type + ' .addLinks').innerHTML = 'Editar';
     }
     i++;
   }
@@ -268,17 +267,17 @@ function selectPlace(data) {
 
 function showLinksDialog(type) {
   editing = type;
-  const saveButton = document.querySelector("#modalContainer .save");
+  const saveButton = document.querySelector('#modalContainer .save');
   saveButton.classList.add(type);
-  changeDisplay("modal", "flex");
-  document.getElementById("linkList").innerHTML = "";
-  currentDestination[type].forEach((link) => {
-    addLink(link, "dialog");
+  changeDisplay('modal', 'flex');
+  document.getElementById('linkList').innerHTML = '';
+  currentDestination[type].forEach(link => {
+    addLink(link, 'dialog');
   });
 }
 
 async function removePlace(id) {
-  await remove("lists/" + list.id + "/destinations/" + id, {
+  await remove('lists/' + list.id + '/destinations/' + id, {
     access_token: localStorage.access_token,
   });
   infos = {};
@@ -288,7 +287,7 @@ async function removePlace(id) {
 
 async function reloadList() {
   console.log(123);
-  const newList = await get("lists/" + list.id, {
+  const newList = await get('lists/' + list.id, {
     access_token: localStorage.access_token,
     filter: '{"include": ["destinations", "users"]}',
   });
@@ -298,15 +297,15 @@ async function reloadList() {
 }
 
 function listDestinations() {
-  const div = document.getElementById("placesList");
-  div.innerHTML = "";
+  const div = document.getElementById('placesList');
+  div.innerHTML = '';
   for (const key in list.destinations) {
     if (list.destinations.hasOwnProperty(key)) {
       const element = list.destinations[key];
-      const place = document.createElement("li");
-      const link = document.createElement("a");
+      const place = document.createElement('li');
+      const link = document.createElement('a');
       link.onclick = () => selectPlace(element);
-      link.innerHTML = element.place + ", " + element.country;
+      link.innerHTML = element.place + ', ' + element.country;
       place.appendChild(link);
       div.appendChild(place);
     }
@@ -315,26 +314,26 @@ function listDestinations() {
 
 function closeDestination() {
   listDestinations();
-  changeDisplay("selected", "none");
-  changeDisplay("noClick", "flex");
+  changeDisplay('selected', 'none');
+  changeDisplay('noClick', 'flex');
 }
 
 function viewLists() {
   clearMarkers();
-  changeDisplay("noClick", "none");
-  changeDisplay("emptyList", "none");
-  changeDisplay("selectList", "flex");
+  changeDisplay('noClick', 'none');
+  changeDisplay('emptyList', 'none');
+  changeDisplay('selectList', 'flex');
 }
 
 async function changeIcon(icon) {
   const data = await patch(
-    "lists/" + list.id,
+    'lists/' + list.id,
     {
       access_token: localStorage.access_token,
     },
     {
       markerIcon: icon,
-    }
+    },
   );
   list.markerIcon = data.markerIcon;
   clearMarkers();
@@ -344,13 +343,13 @@ async function changeIcon(icon) {
 
 async function deleteList() {
   const sure = confirm(
-    "Tem certeza que deseja excluir essa lista? Essa ação não poderá ser desfeita."
+    'Tem certeza que deseja excluir essa lista? Essa ação não poderá ser desfeita.',
   );
   if (!sure) {
     return;
   }
 
-  await remove("users/" + localStorage.userId + "/lists/" + list.id, {
+  await remove('users/' + localStorage.userId + '/lists/' + list.id, {
     access_token: localStorage.access_token,
   });
 
@@ -360,27 +359,27 @@ async function deleteList() {
 
 function closeModal() {
   editing = null;
-  document.querySelector("#links textarea").value = "";
-  changeDisplay("modal", "none");
+  document.querySelector('#links textarea').value = '';
+  changeDisplay('modal', 'none');
 }
 
 document
-  .querySelector("#links textarea")
-  .addEventListener("keyup", linksListener);
+  .querySelector('#links textarea')
+  .addEventListener('keyup', linksListener);
 document
-  .querySelector("#links textarea")
-  .addEventListener("paste", linksListener);
+  .querySelector('#links textarea')
+  .addEventListener('paste', linksListener);
 
 function linksListener() {
-  const value = document.querySelector("#links textarea").value;
-  const lines = value.split("\n").slice(0, -1);
+  const value = document.querySelector('#links textarea').value;
+  const lines = value.split('\n').slice(0, -1);
   if (lines.length > 0) {
     let i = 0;
     while (i < lines.length) {
-      if (lines[i].match(/\w/g)) addLink(lines[i], "dialog");
+      if (lines[i].match(/\w/g)) addLink(lines[i], 'dialog');
       i++;
     }
-    document.querySelector("#links textarea").value = "";
+    document.querySelector('#links textarea').value = '';
   }
 }
 
@@ -388,28 +387,28 @@ function addLink(url, place) {
   const URLRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
   const isUrl = URLRegex.test(url);
   let list;
-  let p = document.createElement("p");
+  let p = document.createElement('p');
 
   switch (place) {
-    case "dialog":
-      list = document.getElementById("linkList");
+    case 'dialog':
+      list = document.getElementById('linkList');
       break;
-    case "hotels":
-      list = document.querySelector(".hotels .linksContainer");
+    case 'hotels':
+      list = document.querySelector('.hotels .linksContainer');
       break;
-    case "places":
-      list = document.querySelector(".places .linksContainer");
+    case 'places':
+      list = document.querySelector('.places .linksContainer');
       break;
-    case "others":
-      list = document.querySelector(".others .linksContainer");
+    case 'others':
+      list = document.querySelector('.others .linksContainer');
       break;
     default:
       return false;
   }
 
   if (isUrl) {
-    const link = document.createElement("a");
-    link.setAttribute("target", "_blank");
+    const link = document.createElement('a');
+    link.setAttribute('target', '_blank');
     link.href = url;
     link.innerHTML = url;
     p.appendChild(link);
@@ -417,13 +416,13 @@ function addLink(url, place) {
     p.innerHTML = url;
   }
 
-  if (place === "dialog") {
+  if (place === 'dialog') {
     const text = p;
-    p = document.createElement("div");
-    p.classList.add("modalUrl");
-    const deleteIcon = document.createElement("button");
-    const trash = document.createElement("img");
-    trash.src = "../assets/icons/bin-grey.svg";
+    p = document.createElement('div');
+    p.classList.add('modalUrl');
+    const deleteIcon = document.createElement('button');
+    const trash = document.createElement('img');
+    trash.src = '../assets/icons/bin-grey.svg';
     deleteIcon.onclick = () => deleteLink(url);
     deleteIcon.appendChild(trash);
     p.appendChild(text);
@@ -433,7 +432,7 @@ function addLink(url, place) {
 }
 
 async function updateLinks() {
-  const links = document.querySelectorAll("#linkList p");
+  const links = document.querySelectorAll('#linkList p');
   const urls = [];
   let i = 0;
   while (i < links.length) {
@@ -442,21 +441,21 @@ async function updateLinks() {
   }
 
   const data = await update(
-    "lists/" + list.id + "/destinations/" + currentDestination.id,
+    'lists/' + list.id + '/destinations/' + currentDestination.id,
     {
       access_token: localStorage.access_token,
     },
     {
       [editing]: urls,
-    }
+    },
   );
 
   console.log(data);
   if (data.id) {
     currentDestination = data;
-    document.querySelector("." + editing + " .addLinks").innerHTML = "Editar";
-    document.querySelector("." + editing + " .linksContainer").innerHTML = "";
-    data[editing].forEach((link) => {
+    document.querySelector('.' + editing + ' .addLinks').innerHTML = 'Editar';
+    document.querySelector('.' + editing + ' .linksContainer').innerHTML = '';
+    data[editing].forEach(link => {
       addLink(link, editing);
     });
   }
@@ -464,7 +463,7 @@ async function updateLinks() {
 }
 
 function deleteLink(url) {
-  const links = document.querySelectorAll("#linkList div");
+  const links = document.querySelectorAll('#linkList div');
   const urls = [];
   let i = 0;
   while (i < links.length) {
@@ -479,12 +478,12 @@ function deleteLink(url) {
 
 async function share() {
   const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  const email = document.getElementsByName("inviteEmail")[0].value;
+  const email = document.getElementsByName('inviteEmail')[0].value;
   if (!emailRegex.test(email)) {
-    return alert("Oops, parece que você inseriu o email errado.");
+    return alert('Oops, parece que você inseriu o email errado.');
   }
   const data = await create(
-    "invites",
+    'invites',
     {
       access_token: localStorage.access_token,
     },
@@ -492,81 +491,81 @@ async function share() {
       email,
       listId: list.id,
       listName: list.name,
-    }
+    },
   );
 
   console.log(data);
   if (data.id) {
-    alert("Convite enviado com sucesso!");
-    document.getElementsByName("inviteEmail")[0].value = "";
+    alert('Convite enviado com sucesso!');
+    document.getElementsByName('inviteEmail')[0].value = '';
     return;
   } else {
-    alert("Oops, algo deu errado ao enviar o convite");
+    alert('Oops, algo deu errado ao enviar o convite');
   }
 }
 
 function getUrlParams() {
   const search = window.location.search;
-  const hashes = search.slice(search.indexOf("?") + 1).split("&");
+  const hashes = search.slice(search.indexOf('?') + 1).split('&');
   const params = {};
-  hashes.map((hash) => {
-    const [key, val] = hash.split("=");
+  hashes.map(hash => {
+    const [key, val] = hash.split('=');
     params[key] = decodeURIComponent(val);
   });
   return params;
 }
 
 async function answerInvite(id) {
-  const invite = await get("invites/" + id, {
+  const invite = await get('invites/' + id, {
     access_token: localStorage.access_token,
   });
 
   console.log(invite);
   if (invite.error && invite.error.statusCode === 401) {
-    alert("Você precisa estar logado(a) para responder o convite.");
-    localStorage.setItem("inviteId", id);
-    window.location.href = "/web";
+    alert('Você precisa estar logado(a) para responder o convite.');
+    localStorage.setItem('inviteId', id);
+    window.location.href = '/';
     return;
   } else if (invite.error && invite.error.statusCode === 404) {
     clearQuery();
     loadLists();
-    return alert("Convite inválido ou expirado.");
+    return alert('Convite inválido ou expirado.');
   }
 
-  const accept = confirm("Deseja acompanhar a lista " + invite.listName + "?");
+  const accept = confirm('Deseja acompanhar a lista ' + invite.listName + '?');
 
   const res = await update(
-    "invites/" + id + "/answer",
+    'invites/' + id + '/answer',
     {
       access_token: localStorage.access_token,
     },
     {
       id,
       answer: accept,
-    }
+    },
   );
 
   console.log(res);
   clearQuery();
   loadLists();
-  localStorage.removeItem("inviteId");
+  localStorage.removeItem('inviteId');
 }
 
 function clearQuery() {
   history.replaceState &&
     history.replaceState(
       null,
-      "",
+      '',
       location.pathname +
-        location.search.replace(/[\?&].+/, "").replace(/^&/, "?")
+        location.search.replace(/[\?&].+/, '').replace(/^&/, '?'),
     );
 }
 
 async function unlinkList() {
-  const sure = confirm("Tem certeza que não quer mais acompanhar essa lista?");
+  const sure = confirm('Tem certeza que não quer mais acompanhar essa lista?');
   if (!sure) return;
 
-  await remove("users/" + localStorage.userId + "/lists/rel/" + list.id, {
+  await remove('users/' + localStorage.userId + '/lists/rel/' + list.id, {
     access_token: localStorage.access_token,
   });
 
@@ -576,53 +575,36 @@ async function unlinkList() {
 async function shareUrl() {
   if (!list.isPublic) {
     const res = await patch(
-      "lists/" + list.id,
+      'lists/' + list.id,
       {
         access_token: localStorage.access_token,
       },
       {
         isPublic: true,
-      }
+      },
     );
   }
-  const newUrl = window.location.origin + "/map?list=" + list.id;
+  const newUrl = window.location.origin + '/map?list=' + list.id;
   console.log(newUrl);
-
-  if (navigator.share) {
-    await navigator
-      .share({
-        title: list.name,
-        text: "Acompanhe minha lista de destinos no Vamos Fugir",
-        url: newUrl,
-      })
-      .then(() => console.log("Successful share"))
-      .catch((error) => console.log("Error sharing", error));
-  } else {
-    var copyText = document.getElementsByName("hiddenUrl")[0];
-    copyText.value = newUrl;
-    copyText.select();
-    document.execCommand("copy");
-    alert("Copiado para área de transferência.");
-  }
 }
 
 async function loadSharedList(id) {
   isSharing = true;
-  const data = await get("lists/public/" + id, {});
+  const data = await get('lists/public/' + id, {});
 
   selectList(data);
   console.log(data);
 }
 
-function logout() {
-  create(
-    "users/logout",
+async function logout() {
+  await create(
+    'usres/logout',
     {
       access_token: localStorage.access_token,
     },
-    {}
+    {},
   );
 
   localStorage.clear();
-  window.location.href = "/web";
+  window.location.href = '/';
 }

@@ -38,12 +38,10 @@
           </div>
         </div>
         <div id="selectList">
-          <span>
-            Selecione uma lista para visualizar:
-          </span>
-          <div id="lists"></div>
+          Selecione uma lista para visualizar:
+          <div id="listsContainer"></div>
           <div class="bottomOptions">
-            <a onclick="logout()">Logout</a>
+            <a onclick="logout()">Fazer logoff</a>
           </div>
         </div>
         <div id="noClick">
@@ -85,7 +83,6 @@
               </form>
               <span>ou</span>
               <br />
-              <input type="text" name="hiddenUrl" hidden>
               <a onclick="shareUrl()">enviar por link</a>
             </div>
             <a onclick="deleteList()" class="deleteList">Excluir lista</a>
