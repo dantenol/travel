@@ -15,10 +15,12 @@ main {
   display: flex;
   flex-direction: column;
   max-width: 500px;
+  width: 90vw;
 }
 
 #container input {
-  width: 320px;
+  max-width: 320px;
+  width: 90%;
   border-radius: 8px;
   padding: 8px;
   border: 2px solid #6E2BC4;
