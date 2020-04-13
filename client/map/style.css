@@ -9,13 +9,17 @@ aside {
   width: 25vw;
   min-width: 400px;
   background-color: white;
-  padding: 16px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   z-index: 3;
 }
 
 main {
   width: 100%;
+}
+
+aside > div:not(:first-child) {
+  padding: 16px;
+  overflow: auto;
 }
 
 #swiper {
@@ -75,11 +79,7 @@ main {
   width: 16px;
 }
 
-#noClick,
-#noList,
-#loading,
-#emptyList,
-#selectList {
+aside > div:not(:first-child) {
   width: 100%;
   height: 100%;
   display: none;
@@ -96,9 +96,9 @@ main {
 }
 
 #emptyList,
+#selected,
 #noClick {
   justify-content: start;
-  overflow: auto;
 }
 
 #noList a {
@@ -112,7 +112,7 @@ main {
   height: 100%;
   display: none;
   flex-direction: column;
-  overflow: auto;
+  align-items: start;
 }
 
 #selected > p,
@@ -297,7 +297,11 @@ ul#placesList {
   padding-left: 0;
 }
 
-#placesList a {
+#placesList li {
+  margin-bottom: 8px;
+}
+
+#placesList {
   color: #00c1c1;
   font-size: 20px;
   text-decoration: underline;
@@ -341,6 +345,10 @@ a.deleteList {
   text-decoration: underline;
   font-size: 12px;
   cursor: pointer;
+}
+
+.links {
+  width: 100%;
 }
 
 .links .addLinks,
@@ -408,16 +416,35 @@ a.deleteList {
 
 #linkList p,
 .linksContainer p {
+  font-size: 20px;
+  text-align: left;
   margin-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  -webkit-touch-callout: text;
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+#credits {
+  color: gray;
+  font-size: 14px;
 }
 
 #linkList p a,
 .linksContainer p a {
   color: #007eff;
   text-decoration: underline;
+  -webkit-touch-callout: text;
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
 }
 
 .shareEmail,
@@ -539,23 +566,30 @@ a.deleteList {
     min-width: 0;
     height: 90vh;
     top: 10vh;
-    transition: top 0.2s ease-in;
-    padding-top: 0;
-    overflow: auto;
+    transition: top 0.2s ease-in, height 0.2s ease-in;
+    border-top-right-radius: 16px;
+    border-top-left-radius: 16px;
   }
 
   aside > div > p,
   aside > div > a,
-  aside > div span {
+  aside > div > span {
     font-size: 24px;
+  }
+
+  aside > div:not(:first-child) {
+    height: calc(90vh - 32px);
   }
 
   aside.down {
     top: 85vh;
+    height: 15vh;
   }
 
-  aside.down > div {
+  aside.down > div:not(:first-child) {
     height: calc(15vh - 48px);
+    justify-content: start;
+    overflow: hidden;
   }
 
   aside.down #toggleDrawer img {
@@ -602,6 +636,8 @@ a.deleteList {
 
   #swiper.focus {
     background-color: #efefef;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
   }
 
   #search input {
@@ -618,7 +654,6 @@ a.deleteList {
 
   #placesList li {
     font-size: 20px;
-    margin-bottom: 16px;
   }
 
   ul#placesList {

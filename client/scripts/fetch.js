@@ -1,61 +1,62 @@
-const _apiHost = window.location.origin + "/api/";
+const _apiHost = window.location.origin + '/api/';
 
-async function request(url, params, data, method = "GET") {
+async function request(url, params, data, method = 'GET') {
   const options = {
     method,
+    mode: 'no-cors',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   };
 
   if (params) {
-    url += "?" + objectToQueryString(params);
+    url += '?' + objectToQueryString(params);
   }
 
-  if (method.includes("P")) {
+  if (method.includes('P')) {
     options.body = JSON.stringify(data);
   }
 
   try {
-    const response = await fetch(_apiHost + url, options);
+    const response = await fetch(url, options);
+    console.log(response);
     const result = await response.json();
-    return result;    
+    return result;
   } catch (error) {
     console.log(error);
   }
-
 }
 
 function objectToQueryString(obj) {
   return Object.keys(obj)
-    .map((key) => key + "=" + obj[key])
-    .join("&");
+    .map(key => key + '=' + obj[key])
+    .join('&');
 }
 
 function generateErrorResponse(message, error) {
   return {
-    status: "error",
+    status: 'error',
     message,
     error,
   };
 }
 
 function get(url, params) {
-  return request(url, params);
+  return request(_apiHost + url, params);
 }
 
 function create(url, params, data) {
-  return request(url, params, data, "POST");
+  return request(_apiHost + url, params, data, 'POST');
 }
 
 function update(url, params, data) {
-  return request(url, params, data, "PUT");
+  return request(_apiHost + url, params, data, 'PUT');
 }
 
 function patch(url, params, data) {
-  return request(url, params, data, "PATCH");
+  return request(_apiHost + url, params, data, 'PATCH');
 }
 
 function remove(url, params) {
-  return request(url, params, null, "DELETE");
+  return request(_apiHost + url, params, null, 'DELETE');
 }

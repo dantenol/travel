@@ -121,22 +121,18 @@ async function loadLists() {
     return alert('Erro ao acessar a lista!');
   }
 
-  changeDisplay('loading', 'none');
-  changeDisplay('noClick', 'none');
   const emptyListText = (document.querySelector('#noList p').innerHTML =
     data.fullName + ', você ainda não tem nenhuma lista.');
   if (!data.lists.length) {
-    changeDisplay('noList', 'flex');
+    setAsideComponemt('noList');
   } else {
-    changeDisplay('selectList', 'flex');
+    setAsideComponemt('selectList');
     displayLists(data.lists);
   }
 }
 
 function newList() {
-  changeDisplay('noList', 'none');
-  changeDisplay('selectList', 'none');
-  changeDisplay('createList', 'flex');
+  setAsideComponemt('createList');
 }
 
 async function createList() {
@@ -179,12 +175,6 @@ function selectList(data) {
   if (isMobile) {
     hideDrawer();
   }
-  changeDisplay('selectList', 'none');
-  changeDisplay('selected', 'none');
-  changeDisplay('noClick', 'none');
-  changeDisplay('loading', 'none');
-  changeDisplay('createList', 'none');
-  changeDisplay('emptyList', 'none');
   changeDisplay('search', 'flex');
 
   changeTextClass('listName', data.name);
@@ -192,9 +182,9 @@ function selectList(data) {
     changeTextClass('listOwner', data.users[0].fullName);
   }
   if (!data.destinations || !data.destinations.length) {
-    changeDisplay('emptyList', 'flex');
+    setAsideComponemt('emptyList');
   } else if (infos.country) {
-    changeDisplay('selected', 'flex');
+    setAsideComponemt('selected');
     buildMarkers(data.destinations);
   } else {
     const firstDestination = data.destinations[0];
@@ -203,7 +193,7 @@ function selectList(data) {
       firstDestination.coords.lng,
     );
     listDestinations();
-    changeDisplay('noClick', 'flex');
+    setAsideComponemt('noClick');
     map.panTo(latLng);
     buildMarkers(data.destinations);
   }
@@ -242,9 +232,7 @@ function selectPlace(data) {
   const removeButton = document.getElementById('removePlace');
   map.panTo(latLng);
   map.setZoom(15);
-  changeDisplay('noClick', 'none');
-  changeDisplay('emptyList', 'none');
-  changeDisplay('selected', 'flex');
+  setAsideComponemt('selected');
   changeText('name', data.place);
   changeText('country', data.country);
   if (!data.customPics) {
@@ -296,7 +284,6 @@ async function removePlace(id) {
 }
 
 async function reloadList() {
-  console.log(123);
   const newList = await get('lists/' + list.id, {
     access_token: localStorage.access_token,
     filter: '{"include": ["destinations", "users"]}',
@@ -324,15 +311,12 @@ function listDestinations() {
 
 function closeDestination() {
   listDestinations();
-  changeDisplay('selected', 'none');
-  changeDisplay('noClick', 'flex');
+  setAsideComponemt('noClick');
 }
 
 function viewLists() {
   clearMarkers();
-  changeDisplay('noClick', 'none');
-  changeDisplay('emptyList', 'none');
-  changeDisplay('selectList', 'flex');
+  setAsideComponemt('selectList');
 }
 
 async function changeIcon(icon) {
@@ -393,8 +377,8 @@ function linksListener() {
   }
 }
 
-function addLink(url, place) {
-  const URLRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
+async function addLink(url, place) {
+  const URLRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,16}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
   const isUrl = URLRegex.test(url);
   let list;
   let p = document.createElement('p');
@@ -417,10 +401,30 @@ function addLink(url, place) {
   }
 
   if (isUrl) {
+    p.innerHTML = 'carregando...';
+    list.appendChild(p);
     const link = document.createElement('a');
+    try {
+      const pageInfo = await request(
+        'https://o19l7inrb3.execute-api.sa-east-1.amazonaws.com/dev/links/load',
+        null,
+        {
+          url,
+        },
+        'POST',
+      );
+      p.remove();
+      console.log(pageInfo);
+      link.href = pageInfo.url;
+      link.innerHTML = pageInfo.text;
+    } catch (error) {
+      console.log(error);
+      p.remove();
+      link.href = url;
+      link.innerHTML = url;
+    }
+    p.innerHTML = '';
     link.setAttribute('target', '_blank');
-    link.href = url;
-    link.innerHTML = url;
     p.appendChild(link);
   } else {
     p.innerHTML = url;
@@ -446,30 +450,38 @@ async function updateLinks() {
   const urls = [];
   let i = 0;
   while (i < links.length) {
-    urls.push(links[i].innerText);
+    const link = {};
+    link.text = links[i].innerText;
+    console.log(links[i].children);
+    if (links[i].children[0] && links[i].children[0].tagName === 'A') {
+      link.url = links[i].children[0].href;
+    }
+
+    urls.push(link);
     i++;
   }
+  console.log(urls);
 
-  const data = await update(
-    'lists/' + list.id + '/destinations/' + currentDestination.id,
-    {
-      access_token: localStorage.access_token,
-    },
-    {
-      [editing]: urls,
-    },
-  );
+  // const data = await update(
+  //   'lists/' + list.id + '/destinations/' + currentDestination.id,
+  //   {
+  //     access_token: localStorage.access_token,
+  //   },
+  //   {
+  //     [editing]: urls,
+  //   },
+  // );
 
-  console.log(data);
-  if (data.id) {
-    currentDestination = data;
-    document.querySelector('.' + editing + ' .addLinks').innerHTML = 'Editar';
-    document.querySelector('.' + editing + ' .linksContainer').innerHTML = '';
-    data[editing].forEach(link => {
-      addLink(link, editing);
-    });
-  }
-  closeModal();
+  // console.log(data);
+  // if (data.id) {
+  //   currentDestination = data;
+  //   document.querySelector('.' + editing + ' .addLinks').innerHTML = 'Editar';
+  //   document.querySelector('.' + editing + ' .linksContainer').innerHTML = '';
+  //   data[editing].forEach(link => {
+  //     addLink(link, editing);
+  //   });
+  // }
+  // closeModal();
 }
 
 function deleteLink(url) {
@@ -677,3 +689,18 @@ document.getElementById('swiper').ontouchmove = e => {
   console.log(pos);
   document.getElementsByTagName('aside')[0].style.top = pos + 'px';
 };
+
+function setAsideComponemt(id) {
+  const elems = document.querySelector('aside').children;
+  let i = 1;
+
+  while (i < elems.length) {
+    const elem = elems[i];
+    if (elem.id === id) {
+      elem.style.display = 'flex';
+    } else {
+      elem.style.display = 'none';
+    }
+    i++;
+  }
+}

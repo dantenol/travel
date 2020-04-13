@@ -5,7 +5,7 @@ module.exports = function(List) {
   List.disableRemoteMethodByName('prototype.__findById__destinations');
   List.disableRemoteMethodByName('prototype.__count__destinations');
 
-  List.beforeRemote('*.__create__destinations', async function(ctx, data) {
+  List.beforeRemote('*.__create__destinations', async function(ctx) {
     const thisList = await List.findById(ctx.req.params.id);
     thisList.updateAttributes({modifiedAt: new Date()});
     const body = ctx.req.body;
@@ -14,9 +14,18 @@ module.exports = function(List) {
     return;
   });
 
-  List.beforeRemote('*.__destroyById__destinations', async function(ctx, data) {
+  List.afterRemote('*.__destroyById__destinations', async function(ctx) {
     const thisList = await List.findById(ctx.req.params.id);
     thisList.updateAttributes({modifiedAt: new Date()});
+    return;
+  });
+
+  List.afterRemote('*.__updateById__destinations', async function(ctx) {
+    const thisList = await List.findById(ctx.req.params.id);
+    thisList.updateAttributes({
+      modifiedAt: new Date(),
+      lastModifiedBy: ctx.req.accessToken.userId,
+    });
     return;
   });
 
