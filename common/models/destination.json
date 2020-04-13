@@ -25,31 +25,31 @@
       "type": "date"
     },
     "lastModifiedBy": {
-      "type": "any"
+      "type": "object"
     },
     "createdBy": {
-      "type": "any"
+      "type": "object"
     },
     "hotels": {
       "type": [
-        "string"
+        "object"
       ],
       "default": []
     },
     "places": {
       "type": [
-        "string"
+        "any"
       ],
       "default": []
     },
     "photoURLs": {
       "type": [
-        "string"
+        "any"
       ]
     },
     "others": {
       "type": [
-        "string"
+        "object"
       ],
       "default": []
     },
