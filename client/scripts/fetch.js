@@ -3,7 +3,6 @@ const _apiHost = window.location.origin + '/api/';
 async function request(url, params, data, method = 'GET') {
   const options = {
     method,
-    mode: 'no-cors',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -11,6 +10,10 @@ async function request(url, params, data, method = 'GET') {
 
   if (params) {
     url += '?' + objectToQueryString(params);
+  }
+
+  if (!url.includes(window.location.origin)) {
+    options.mode = "cors";
   }
 
   if (method.includes('P')) {
