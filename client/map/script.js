@@ -404,9 +404,10 @@ async function addLink(url, place) {
     p.innerHTML = 'carregando...';
     list.appendChild(p);
     const link = document.createElement('a');
+
     try {
       const pageInfo = await request(
-        'https://o19l7inrb3.execute-api.sa-east-1.amazonaws.com/dev/links/load',
+        'https://m27e170alf.execute-api.sa-east-1.amazonaws.com/dev/links/load',
         null,
         {
           url,
@@ -414,15 +415,15 @@ async function addLink(url, place) {
         'POST',
       );
       p.remove();
-      console.log(pageInfo);
-      link.href = pageInfo.url;
-      link.innerHTML = pageInfo.text;
+      link.href = pageInfo.body.url;
+      link.innerHTML = pageInfo.body.text;
     } catch (error) {
       console.log(error);
       p.remove();
       link.href = url;
       link.innerHTML = url;
     }
+
     p.innerHTML = '';
     link.setAttribute('target', '_blank');
     p.appendChild(link);
@@ -437,7 +438,7 @@ async function addLink(url, place) {
     const deleteIcon = document.createElement('button');
     const trash = document.createElement('img');
     trash.src = '../assets/icons/bin-grey.svg';
-    deleteIcon.onclick = () => deleteLink(url);
+    deleteIcon.onclick = () => deleteLink(url.trim());
     deleteIcon.appendChild(trash);
     p.appendChild(text);
     p.appendChild(deleteIcon);
@@ -489,10 +490,11 @@ function deleteLink(url) {
   const urls = [];
   let i = 0;
   while (i < links.length) {
-    urls.push(links[i].innerText);
+    urls.push(links[i].innerText.trim());
     i++;
   }
 
+  console.log(url, urls);
   const curr = links[urls.indexOf(url)];
   console.log(curr);
   curr.remove();
