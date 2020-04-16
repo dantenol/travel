@@ -509,7 +509,6 @@ async function updateLinks() {
   while (i < links.length) {
     const link = {};
     link.text = links[i].innerText;
-    console.log(links[i].children);
     if (links[i].children[0] && links[i].children[0].tagName === 'A') {
       link.url = links[i].children[0].href;
     }
