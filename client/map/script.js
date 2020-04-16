@@ -713,9 +713,9 @@ document.getElementById('swiper').ontouchend = e => {
   document.getElementById('swiper').classList.remove('focus');
   document.getElementsByTagName('aside')[0].style.top = '';
   console.log(swipeStart, end);
-  if (end > swipeStart && drawerVisible) {
+  if (end >= swipeStart && drawerVisible) {
     hideDrawer();
-  } else if (end < swipeStart && !drawerVisible) {
+  } else if (end <= swipeStart && !drawerVisible) {
     showDrawer();
   }
 };
