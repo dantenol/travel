@@ -399,7 +399,7 @@ async function linksListener() {
         const link = await processLink(lines[i]);
         addLink(link, 'dialog');
       } else if (lines[i].match(/\w/g)) {
-        addLink(lines[i], 'dialog');
+        addLink({text: lines[i]}, 'dialog');
       }
       i++;
     }
@@ -456,35 +456,14 @@ async function addLink(data, place) {
       return false;
   }
 
-  if (isUrl) {
-    p.innerHTML = 'carregando...';
-    list.appendChild(p);
+  if (data.url) {
     const link = document.createElement('a');
-
-    try {
-      const pageInfo = await request(
-        'https://m27e170alf.execute-api.sa-east-1.amazonaws.com/dev/links/load',
-        null,
-        {
-          url,
-        },
-        'POST',
-      );
-      p.remove();
-      link.href = pageInfo.body.url;
-      link.innerHTML = pageInfo.body.text;
-    } catch (error) {
-      console.log(error);
-      p.remove();
-      link.href = url;
-      link.innerHTML = url;
-    }
-
-    p.innerHTML = '';
+    link.href = data.url;
+    link.innerHTML = data.text;
     link.setAttribute('target', '_blank');
     p.appendChild(link);
   } else {
-    p.innerHTML = url;
+    p.innerHTML = data.text;
   }
 
   if (place === 'dialog') {
@@ -494,7 +473,7 @@ async function addLink(data, place) {
     const deleteIcon = document.createElement('button');
     const trash = document.createElement('img');
     trash.src = '../assets/icons/bin-grey.svg';
-    deleteIcon.onclick = () => deleteLink(url.trim());
+    deleteIcon.onclick = () => deleteLink(data.text.trim());
     deleteIcon.appendChild(trash);
     p.appendChild(text);
     p.appendChild(deleteIcon);
