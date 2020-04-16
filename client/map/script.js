@@ -387,22 +387,55 @@ document
   .querySelector('#links textarea')
   .addEventListener('paste', linksListener);
 
-function linksListener() {
+async function linksListener() {
   const value = document.querySelector('#links textarea').value;
   const lines = value.split('\n').slice(0, -1);
+  const URLRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,16}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
+
   if (lines.length > 0) {
     let i = 0;
     while (i < lines.length) {
-      if (lines[i].match(/\w/g)) addLink(lines[i], 'dialog');
+      if (URLRegex.test(lines[i])) {
+        const link = await processLink(lines[i]);
+        addLink(link, 'dialog');
+      } else if (lines[i].match(/\w/g)) {
+        addLink(lines[i], 'dialog');
+      }
       i++;
     }
     document.querySelector('#links textarea').value = '';
   }
 }
 
-async function addLink(url, place) {
-  const URLRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,16}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
-  const isUrl = URLRegex.test(url);
+async function processLink(url) {
+  const list = document.getElementById('linkList');
+  let p = document.createElement('p');
+  p.innerHTML = 'carregando...';
+  list.appendChild(p);
+  const data = {};
+
+  try {
+    const pageInfo = await request(
+      'https://m27e170alf.execute-api.sa-east-1.amazonaws.com/dev/links/load',
+      null,
+      {
+        url,
+      },
+      'POST',
+    );
+    p.remove();
+    data.url = pageInfo.body.url;
+    data.text = pageInfo.body.text;
+  } catch (error) {
+    console.log(error);
+    p.remove();
+    data.url = url;
+    data.text = url;
+  }
+  return data;
+}
+
+async function addLink(data, place) {
   let list;
   let p = document.createElement('p');
 
