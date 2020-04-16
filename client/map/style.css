@@ -125,6 +125,7 @@ aside > div:not(:first-child) {
   color: #6e2bc5;
   font-size: 48px;
   margin: 0 !important;
+  text-align: left;
 }
 
 #country {
