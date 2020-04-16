@@ -22,7 +22,6 @@ async function request(url, params, data, method = 'GET') {
 
   try {
     const response = await fetch(url, options);
-    console.log(response);
     const result = await response.json();
     return result;
   } catch (error) {
