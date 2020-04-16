@@ -266,12 +266,12 @@ function selectPlace(data) {
   let i = 0;
   while (i < 3) {
     const type = options[i];
+    document.querySelector('.' + type + ' .linksContainer').innerHTML = '';
     if (isSharing) {
       document.querySelector('.' + type + ' .addLinks').style.display = 'none';
     }
     if (data[type].length > 0) {
       data[type].forEach(link => {
-        document.querySelector('.' + type + ' .linksContainer').innerHTML = '';
         addLink(link, type);
       });
       document.querySelector('.' + type + ' .addLinks').innerHTML = 'Editar';
