@@ -519,26 +519,26 @@ async function updateLinks() {
   }
   console.log(urls);
 
-  // const data = await update(
-  //   'lists/' + list.id + '/destinations/' + currentDestination.id,
-  //   {
-  //     access_token: localStorage.access_token,
-  //   },
-  //   {
-  //     [editing]: urls,
-  //   },
-  // );
+  const data = await update(
+    'lists/' + list.id + '/destinations/' + currentDestination.id,
+    {
+      access_token: localStorage.access_token,
+    },
+    {
+      [editing]: urls,
+    },
+  );
 
-  // console.log(data);
-  // if (data.id) {
-  //   currentDestination = data;
-  //   document.querySelector('.' + editing + ' .addLinks').innerHTML = 'Editar';
-  //   document.querySelector('.' + editing + ' .linksContainer').innerHTML = '';
-  //   data[editing].forEach(link => {
-  //     addLink(link, editing);
-  //   });
-  // }
-  // closeModal();
+  console.log(data);
+  if (data.id) {
+    currentDestination = data;
+    document.querySelector('.' + editing + ' .addLinks').innerHTML = 'Editar';
+    document.querySelector('.' + editing + ' .linksContainer').innerHTML = '';
+    data[editing].forEach(link => {
+      addLink(link, editing);
+    });
+  }
+  closeModal();
 }
 
 function deleteLink(url) {
