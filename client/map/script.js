@@ -94,7 +94,30 @@ async function addPlace() {
     },
   );
   selectPlace(placeData);
+  const photos = await retrievePermanentPhotoUrls(placeData.photoURLs);
   reloadList();
+  await update(
+    'lists/' + list.id + '/destinations/' + placeData.id,
+    {
+      access_token: localStorage.access_token,
+    },
+    {
+      photoURLs: photos,
+    },
+  );
+}
+
+async function retrievePermanentPhotoUrls(urls) {
+  console.log(urls);
+  const permanentURLs = await request(
+    'https://m27e170alf.execute-api.sa-east-1.amazonaws.com/dev/map/loadPhotos',
+    null,
+    {
+      photoURLs: urls,
+    },
+    'POST',
+  );
+  return permanentURLs.body.processedUrls;
 }
 
 document.addEventListener('DOMContentLoaded', onLoad);
