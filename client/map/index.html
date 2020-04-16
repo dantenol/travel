@@ -1,13 +1,28 @@
 <!DOCTYPE html>
 <html lang="pt">
   <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-163842537-1"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-163842537-1');
+    </script>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vamos Fugir | Mapa</title>
     <link rel="stylesheet" href="../index.css" />
     <link rel="stylesheet" href="style.css" />
     <script src="../scripts/fetch.js"></script>
-    <meta name="theme-color" content="#673AB6">
+    <meta name="theme-color" content="#673AB6" />
   </head>
   <body>
     <div id="container">
@@ -96,7 +111,7 @@
               </form>
               <span>ou</span>
               <br />
-              <input type="text" name="shareUrl" hidden>
+              <input type="text" name="shareUrl" hidden />
               <a onclick="shareUrl()">enviar por link</a>
             </div>
             <a onclick="deleteList()" class="deleteList">

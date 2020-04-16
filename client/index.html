@@ -1,27 +1,41 @@
 <!DOCTYPE html>
 <html lang="pt">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Entrar | Vamos Fugir</title>
-  <link rel="stylesheet" href="index.css" />
-  <link rel="stylesheet" href="style.css" />
-  <script src="./scripts/fetch.js"></script>
-  <meta name="theme-color" content="#673AB6">
-</head>
-<body>
-  <main>
-    <div id="container">
-      <h1>Entrar</h1>
-      <form action="javascript:void(0)" onsubmit="login()">
-        <input type="email" placeholder="email" id="email">
-        <input type="password" placeholder="senha" id="pwd">
-        <input type="submit" value="entrar">
-      </form>
-      <a href="password-reset" id="pwdReset">Esqueci minha senha</a>
-      <a href="signup" id="signup">fazer cadastro</a>
-    </div>
-  </main>
-  <script src="script.js"></script>
-</body>
+  <head>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-163842537-1');
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Entrar | Vamos Fugir</title>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="./scripts/fetch.js"></script>
+    <meta name="theme-color" content="#673AB6" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-163842537-1"
+    ></script>
+  </head>
+  <body>
+    <main>
+      <div id="container">
+        <h1>Entrar</h1>
+        <form action="javascript:void(0)" onsubmit="login()">
+          <input type="email" placeholder="email" id="email" />
+          <input type="password" placeholder="senha" id="pwd" />
+          <input type="submit" value="entrar" />
+        </form>
+        <a href="password-reset" id="pwdReset">Esqueci minha senha</a>
+        <a href="signup" id="signup">fazer cadastro</a>
+      </div>
+    </main>
+    <script src="script.js"></script>
+  </body>
 </html>
