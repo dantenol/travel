@@ -12,6 +12,8 @@ const options = {
   cert: sslConfig.certificate,
 };
 
+console.log(options);
+
 app.start = function() {
   const server = https.createServer(options, app);
   // start the web server

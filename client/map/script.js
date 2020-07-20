@@ -275,7 +275,10 @@ function selectPlace(data) {
         addLink(link, type);
       });
       document.querySelector('.' + type + ' .addLinks').innerHTML = 'Editar';
+    } else {
+      document.querySelector('.' + type + ' .addLinks').innerHTML = 'Adicionar';
     }
+    loadSearchButton(data.place, type);
     i++;
   }
 
@@ -284,6 +287,25 @@ function selectPlace(data) {
   if (isMobile) {
     toggleDrawer();
   }
+}
+
+function loadSearchButton(location, type) {
+  const elem = document.querySelector('.' + type + ' .webSearch');
+  const encodedLocation = encodeURIComponent(location);
+  let url;
+  switch (type) {
+    case "hotels":
+      url =
+        'https://www.google.com/travel/hotels/' + encodedLocation;
+      break;
+    case "others":
+      url = 'https://www.google.com/search?q=dicas+' + encodedLocation;
+    break
+    default:
+      break;
+  }
+  console.log(url);
+  elem.href = url;
 }
 
 function showLinksDialog(type) {
