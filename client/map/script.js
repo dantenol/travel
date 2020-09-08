@@ -141,6 +141,8 @@ async function loadLists() {
   });
 
   if (!data.id) {
+    localStorage.clear();
+    window.location.href = "/"
     return alert('Erro ao acessar a lista!');
   }
 
